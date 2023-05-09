@@ -5,6 +5,13 @@ import pytesseract
 from config import DATABASE_CONFIG
 import os
 
+# Tesseract 바이너리 파일 경로 설정
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+# 환경 변수 설정
+os.environ['TESSDATA_PREFIX'] = r"C:\Program Files\Tesseract-OCR\tessdata"
+
+
 db = mysql.connector.connect(**DATABASE_CONFIG)
 app = Flask(__name__)
 
@@ -40,6 +47,12 @@ def upload_ticket():
     # 텍스트 추출
     text = recognize_text(image_path)
 
+    return text
+
+@app.route('/api/v1/view-review/ticket', methods=['PUT'])
+def edit_ticket():
+
+    text = request.form['text']
     return text
 
 if __name__ == '__main__':
